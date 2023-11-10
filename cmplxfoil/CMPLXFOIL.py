@@ -108,7 +108,7 @@ class CMPLXFOIL(BaseSolver):
         # Dictionary with dictionary of functions for each aero problem
         self.funcs = {}
         self.funcsComplex = {}
-        self.functionList = ["cl", "cd", "cm"]  # available functions
+        self.functionList = ["cl", "cd", "cm" ,"cp_visc", "x", "y", "tau"]  # available functions
 
         # When the XFOIL solver is called, slice data is saved (key is the current
         # AeroProblem name). In the associated value is a dictionary containing
@@ -278,6 +278,10 @@ class CMPLXFOIL(BaseSolver):
             "cl": dtype(xfoil.cr09.cl),
             "cd": dtype(xfoil.cr09.cd),
             "cm": dtype(xfoil.cr09.cm),
+            "cp_visc":xfoil.cr04.cpv.astype(dtype),
+            "x":xfoil.cr05.x.astype(dtype),
+            "y":xfoil.cr05.y.astype(dtype),
+            "tau": xfoil.cr15.tau.astype(dtype)
         }
 
         # Pull out and process the pressure and skin friction coefficient data
