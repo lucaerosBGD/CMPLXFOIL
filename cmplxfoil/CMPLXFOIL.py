@@ -108,7 +108,7 @@ class CMPLXFOIL(BaseSolver):
         # Dictionary with dictionary of functions for each aero problem
         self.funcs = {}
         self.funcsComplex = {}
-        self.functionList = ["cl", "cd", "cm" ,"cp_visc", "x", "y", "tau"]  # available functions
+        self.functionList = ["cl", "cd", "cm" ,"cp_visc", "x", "y", "tau", "uinf"]  # available functions
 
         # When the XFOIL solver is called, slice data is saved (key is the current
         # AeroProblem name). In the associated value is a dictionary containing
@@ -281,7 +281,8 @@ class CMPLXFOIL(BaseSolver):
             "cp_visc":xfoil.cr04.cpv.astype(dtype),
             "x":xfoil.cr05.x.astype(dtype),
             "y":xfoil.cr05.y.astype(dtype),
-            "tau": xfoil.cr15.tau.astype(dtype)
+            "tau": xfoil.cr15.tau.astype(dtype), 
+            "uinf": dtype(xfoil.cr09.qinf)
         }
 
         # Pull out and process the pressure and skin friction coefficient data
@@ -464,10 +465,10 @@ class CMPLXFOIL(BaseSolver):
 
         # Add a number to the filename, either from the user or from the current callCounter
         if number is not None:
-            baseName = baseName + "_%3.3d" % number
+            baseName = baseName + "_%6.6d" % number
         else:
             if self.getOption("numberSolutions"):
-                baseName = baseName + "_%3.3d" % self.curAP.callCounter
+                baseName = baseName + "_%6.6d" % self.curAP.callCounter
 
         # Join to get the actual filename root
         base = os.path.join(outputDir, baseName)
